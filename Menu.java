@@ -6,7 +6,7 @@ public class Menu {
    
    public void Executa() {
   
-      while(true)   
+      while(true){
       menu(); 
       String leitor = teclado.nextLine();
 
@@ -42,6 +42,7 @@ public class Menu {
             
                break;
          }
+      }
    }
 
    public void menu() {

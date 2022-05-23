@@ -1,3 +1,6 @@
+import javax.lang.model.element.Element;
+import javax.xml.catalog.Catalog;
+
 /**
  * Esta classe guarda as palavra do indice remissivo em ordem alfabetica.
  * 
@@ -20,14 +23,13 @@ public class ListaOrdenadaDePalavras {
             listaOcorrencias = new ListaDeOcorrencias();
         }
 
-        public String getStr() {
+        public String getPalavra() {
             return str;
         }
 
-        public void setStr(String str) {
+        public void setPalavra(String str) {
             this.str = str;
         }
-        
 
         public ListaDeOcorrencias getListaOcorrencias() {
             return listaOcorrencias;
@@ -55,13 +57,162 @@ public class ListaOrdenadaDePalavras {
         // demais metodos necessarios
     }
 
-    // Método para adicionar primeira palavra na lista 
+    private int qtd = 0;
+
+    public void mostraLista() {
+        Palavra p = refHead;
+        for (int i = 0; i <= qtd - 1; i++) {
+            System.out.println(p.getPalavra());
+            p = p.getNext();
+        }
+
+    }
+
+    // Método para adicionar primeira palavra na lista
     public void adicionaPrimeiraPalavra(String palavra) {
         Palavra p = new Palavra(palavra);
         p.setNext(refHead);
-        refHead = p;  
+        refHead = p;
+        qtd++;
     }
 
+    public void setNovaPalavra(int index, String str) {
+        Palavra aux = refHead;
 
+        for (int i = 0; aux != null && i < index; i++)
+            aux = aux.getNext();
+
+        if (aux != null)
+            aux.setPalavra(str);
+        else
+            throw new IllegalArgumentException();
+    }
+
+    public void OrganizaAlfabetica(String palavraVerificar) {
+        if (qtd == 0) {
+            adicionaPrimeiraPalavra(palavraVerificar);
+        } else {
+            // boolean ultimaPalavra = false;
+            int posPalavra = 0;
+            Palavra novaPalavra = new Palavra(palavraVerificar);
+            Palavra aux = refHead;
+            
+            do {
+                do {
+                    // verifica se letra da nova palavra vem antes da letra da palavra an lista
+                    // se nao, entra no loop
+                    verificaOrdem(aux, novaPalavra, posPalavra, palavraVerificar);
+                    /*
+                     * if (caracVerificar > caracPalNaLista) {
+                     * 
+                     * novaPalavra.setNext(aux.getNext());
+                     * aux.setNext(novaPalavra);
+                     * 
+                     * qtd++;
+                     * aux = novaPalavra;
+                     * Palavra aux2 = new Palavra("");
+                     * aux = aux2;
+                     * }
+                     * else
+                     * {
+                     * 
+                     * if (aux.getNext() == null) {
+                     * 
+                     * novaPalavra.setNext(aux);
+                     * refHead = novaPalavra;
+                     * qtd++;
+                     * Palavra aux2 = new Palavra("");
+                     * aux = aux2;
+                     * 
+                     * }
+                     * 
+                     * }
+                     */
+
+                } while (aux.getNext() == null);
+
+            } while (aux.getNext() == null);
+        }
+    }
+
+    public void verificaOrdem(Palavra aux, Palavra novaPalavra, int posPalavra, String palavraVerificar) {
+        char caracVerificar = palavraVerificar.charAt(posPalavra);
+        char caracPalNaLista = aux.getPalavra().charAt(posPalavra);
+        int cont = 0;
+        Palavra auxAnterior = null;
+        
+        cont++;
+        if (caracVerificar > caracPalNaLista) {
+            while(aux.getNext() != null)
+            {
+            Palavra p = aux.getNext();
+            String strPalavra = p.getPalavra();
+            char caracProxPalavra = strPalavra.charAt(0);
+            
+            if(caracVerificar >= caracProxPalavra)
+            {
+                aux = aux.getNext();
+            }
+            else{break;}}
+            while(caracPalNaLista == caracVerificar)
+            { 
+                caracVerificar = palavraVerificar.charAt(posPalavra++);
+                caracPalNaLista = aux.getPalavra().charAt(posPalavra++);
+            }
+                if(cont == 1){
+                    novaPalavra.setNext(aux.getNext());
+                    aux.setNext(novaPalavra);
+                    qtd++;
+                    //aux = novaPalavra;
+                    Palavra aux2 = new Palavra("");
+                    aux = aux2;
+                    // ultimaPalavra = true;
+                }
+                else{
+                    auxAnterior = aux.getNext();
+                    novaPalavra.setNext(auxAnterior);
+                    aux = aux.getNext();
+                    
+                    verificaOrdem(aux, novaPalavra, posPalavra, palavraVerificar);
+                }
+        
+            } else {
+                if(cont == 1){
+                    novaPalavra.setNext(aux);
+                    refHead = novaPalavra;
+                    qtd++;
+                    Palavra aux2 = null;
+                    aux = aux2;
+                }
+                else{
+                    novaPalavra.setNext(aux);
+                    //refHead = novaPalavra;
+                    qtd++;
+                    Palavra aux2 = null;
+                    aux = aux2;
+                }
+                }
+                //aux = aux.getNext();
+                //verificaOrdem(aux, novaPalavra, posPalavra, palavraVerificar);
+                /*if (aux.getNext() == null) {
+                    novaPalavra.setNext(aux);
+                    refHead = novaPalavra;
+                    qtd++;
+                    Palavra aux2 = new Palavra("");
+                    aux = aux2;
+                }*/
+
+            //}
+        /*} else {
+            // aux = aux.getNext();
+            // if(aux.getNext()==null){
+            novaPalavra.setNext(aux);
+            refHead = novaPalavra;
+            qtd++;
+            Palavra aux2 = new Palavra("");
+            aux = aux2;
+            }
+        }*/
+    }
 
 }

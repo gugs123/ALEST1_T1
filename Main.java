@@ -11,6 +11,7 @@ public class Main {
     ArquivoTexto arquivo = new ArquivoTexto(); // objeto que gerencia o arquivo
     LinhaTexto linha = new LinhaTexto(); // objeto que gerencia uma linha
     String l;
+    ListaOrdenadaDePalavras lista = new ListaOrdenadaDePalavras();
 
     arquivo.open("ArquivoExemplo.txt");
     
@@ -25,17 +26,21 @@ public class Main {
             nLinha = 0;
             nPagina++;
         }
+        //
         System.out.println("Linha " + nLinha + ":");
 
         linha.setLine(l); // define o texto da linha
         do // laco que passa em cada palavra de uma linha
         {
             String palavra = linha.getNextWord(); // obtem a proxima palavra da linha
+            
             if (palavra == null)// acabou a linha
             {
                 break;
             }
-            System.out.println("-" + palavra + "-");
+            lista.OrganizaAlfabetica(palavra);
+            lista.mostraLista();
+            //System.out.println("-" + palavra + "-");
          } while (true);
 
     } while (true);
